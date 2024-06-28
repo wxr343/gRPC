@@ -1,0 +1,64 @@
+syntax = "proto3";
+
+option go_package="./;sayproto";
+package sayproto;
+// 消息双向流
+service Stream{
+  // 双向流式rpc，同时在请求参数前和响应参数前加上stream
+  rpc Conversations(stream StreamRequest) returns(stream StreamResponse){};
+}
+// 定义流式请求信息
+message StreamRequest{
+  //流请求参数
+  string question = 1;
+}
+
+// 定义流式响应信息
+message StreamResponse{
+  //流响应数据
+  string answer = 1;
+}
+
+// 文件服务接口单向流
+service FileService{
+  rpc UploadFile(stream UploadRequest)returns(UploadResponse);
+  rpc DownloadFile(DownloadFileRequest )returns(stream DownloadFileResponse);
+}
+// UploadRequest上传请求
+message UploadRequest {
+  // 文件名称
+  bytes fileName = 1;
+
+  // 位移量
+  sint64 off = 2;
+
+  // 文件片
+  bytes Content = 3;
+
+  // 当前文件片长度
+  int32 len = 4;
+}
+// UploadResponse上传回应
+message UploadResponse {
+  string FilePath = 1;
+}
+
+// DownloadFileRequest下载请求
+message DownloadFileRequest{
+  string FilePath = 1;
+}
+// DownloadFileResponse下载响应
+message DownloadFileResponse{
+  // 文件名称
+  bytes fileName = 1;
+
+  // 位移量
+  sint64 off = 2;
+
+  // 文件片
+  bytes Content = 3;
+
+  // 当前文件片长度
+  int32 len = 4;
+
+}
