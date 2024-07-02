@@ -105,8 +105,6 @@ func (s *FileService) DownloadFile(fileReq *pb.DownloadFileRequest, srv pb.FileS
 			}
 			log.Println("senderr:", senderr)
 			return err
-		} else {
-			log.Println("senderr nil")
 		}
 	}
 	// 关闭文件
